@@ -53,5 +53,5 @@
     "SendPartyInfosOnCommand": true,
 
     "ChangePlatformOnCommand": true,
-    "TryToRejoinOldParty": true,
+    "TryToRejoinOldParty": true
 }
