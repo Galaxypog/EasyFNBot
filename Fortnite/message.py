@@ -1,10 +1,10 @@
-import os,fortnitepy,datetime,requests,json,asyncio,time,random,threading,fn_api_wrapper
+import os,fortnitepy,datetime,requests,json,asyncio,time,random,threading
 
 from threading import Thread
 
-from Fortnite import Variants,API,Extras,colored
+from Fortnite import Variants,API,Extras,colored,apiwrapper
 
-fnapi = fn_api_wrapper.FortniteAPI()
+fnapi = apiwrapper.FortniteAPI()
 
 async def Command(self, message):
     HasFullAccess = False
@@ -65,7 +65,7 @@ async def Command(self, message):
         if self.Settings["LogoutOnCommand"] or HasFullAccess:
             await message.reply("Logged out")
             await self.logout()
-            print("\033c", end="")
+            os.system("cls")
             os.system(colored.Colored(f"[BOT] [{TimeInUTC}] Logged out.", "red"))
         else:
             await message.reply("Can't Logout. The Bot owner has disabled this command!")
@@ -410,7 +410,7 @@ async def Command(self, message):
                     return
             else:
                 await self.user.party.me.set_emote(r.id)
-                await message.reply(f'Emote set to {r.name}')
+                await message.reply(f'Emote set to {r.Names[Lang]}')
 
     if args[0] == "?SKIN" and args[1] ==  "VARIANTS":
         Lang = "en"
@@ -435,7 +435,6 @@ async def Command(self, message):
                     allvariants += f'{variant["channel"]}:\n'
                     for v in variant["tags"]:
                         allvariants += f'-{v["name"][Lang]}\n'
-                print(allvariants)
                 await message.reply(allvariants)
             else:
                 await message.reply("This skin doesn't have any variants or the server isn't updated")
@@ -480,7 +479,7 @@ async def Command(self, message):
             else:
                 if msg.count("--") != 0:
                     terax = requests.get(f"https://fnapi.terax235.com/api/v1.2/cosmetics/search?query={r.id}&type=skin").json()
-                    if terax.statusCode != 200:
+                    if terax["statusCode"] != 200:
                         await message.reply("Sorry the server for variants isn't updated")
                         return
                     v = []
@@ -498,18 +497,17 @@ async def Command(self, message):
                             VariantChannelName = (Variant.split("=")[0])[2:]
                             Variant = Variant.split("=")[1]
                             for variant in terax["data"]["variants"]:
-                                print(variant["channel"].upper() + " -> " + VariantChannelName)
                                 if variant["channel"].upper() == VariantChannelName:
                                     for tag in variant["tags"]:
                                         if tag["name"][Lang].upper() == Variant:
                                             v.append(create_variant(variant["channel"],tag["tag"]))
                     
                     await self.user.party.me.set_outfit(r.id,variants=v)
-                    await message.reply(f'Outfit set to {r.name}')
+                    await message.reply(f'Outfit set to {r.Names[Lang]}')
 
                 else:
                     await self.user.party.me.set_outfit(r.id)
-                    await message.reply(f'Outfit set to {r.name}')
+                    await message.reply(f'Outfit set to {r.Names[Lang]}')
 
     if args[0] == "!BACKPACK" and len(args) > 1:
         if self.Settings["SetBackpackOnCommand"] or HasFullAccess:
@@ -541,4 +539,4 @@ async def Command(self, message):
                     return
             else:
                 await self.user.party.me.set_backpack(r.id)
-                await message.reply(f'Backpack set to {r.name}')
+                await message.reply(f'Backpack set to {r.Names[Lang]}')
