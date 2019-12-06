@@ -24,7 +24,7 @@ if GithubVersion != Settings["BotVersion"]:
         if not "Settings.json" in fileName:
             z.extract(fileName, '')
     os.system("move EasyFNBot-master\*")
-    os.system("move EasyFNBot-master\Fortnite* Fortnite")
+    os.system("move /Y EasyFNBot-master\Fortnite\* Fortnite")
     os.system("rmdir EasyFNBot-master")
     os.system("Start.bat")
 else:
