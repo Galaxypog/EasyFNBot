@@ -25,7 +25,7 @@ if GithubVersion != Settings["BotVersion"]:
             z.extract(fileName, '')
     os.system("move EasyFNBot-master\*")
     os.system("move /Y EasyFNBot-master\Fortnite\* Fortnite")
-    os.system("rmdir EasyFNBot-master")
+    os.system("rmdir /S /Q EasyFNBot-master")
     os.system("Start.bat")
 else:
     print("You version is up to date...")
